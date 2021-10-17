@@ -103,80 +103,86 @@ class _EmailLoginPage extends StatelessWidget {
   }
 }
 
+class _EmailLoginFormController extends GetxController {
+  var formKey = GlobalKey<FormState>();
+
+  var emailTextController = TextEditingController();
+  var passwordTextController = TextEditingController();
+}
+
 class _EmailLoginForm extends StatelessWidget {
-  static final _formKey = GlobalKey<FormState>();
-
-  final emailTextController = TextEditingController();
-  final passwordTextController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          ObscurableFormField(
-              shouldObscure: false,
-              hintText: "이메일",
-              textController: emailTextController,
-              funValidator: validateEmail(),
+    return GetBuilder<_EmailLoginFormController>(
+      init: _EmailLoginFormController(),
+      builder: (_EmailLoginFormController controller) {
+        return Form(
+          key: controller.formKey,
+          child: Column(
+            children: [
+              ObscurableFormField(
+                shouldObscure: false,
+                hintText: "이메일",
+                textController: controller.emailTextController,
+                funValidator: validateEmail(),
               ),
-          ObscurableFormField(
-            shouldObscure: true,
-            hintText: "비밀번호",
-            textController: passwordTextController,
-            funValidator: validatePassword(),
-          ),
-          CustomElevatedButton(
-            text: "로그인",
-            elevation: 8,
-            color: Colors.yellow[800],
-            funPageRoute: () async {
-              if (_formKey.currentState!.validate()) {
-                MSIUserStatus status = await MSIUser(
-                        email: emailTextController.text,
-                        password: passwordTextController.text,
-                        )
-                    .login();
+              ObscurableFormField(
+                shouldObscure: true,
+                hintText: "비밀번호",
+                textController: controller.passwordTextController,
+                funValidator: validatePassword(),
+              ),
+              CustomElevatedButton(
+                text: "로그인",
+                elevation: 8,
+                color: Colors.yellow[800],
+                funPageRoute: () async {
+                  if (controller.formKey.currentState!.validate()) {
+                    MSIUserStatus status = await MSIUser(
+                      email: controller.emailTextController.text,
+                      password: controller.passwordTextController.text,
+                    ).login();
 
-                switch (status) {
-                  case MSIUserStatus.success:
-                    Get.to(MainPage());
+                    switch (status) {
+                      case MSIUserStatus.success:
+                        Get.to(MainPage());
 
-                    break;
+                        break;
 
-                  case MSIUserStatus.userNotFound:
-                    Get.dialog(
-                      const CustomAlertDialog(
-                        message: "사용자를 찾을 수 없습니다. 다시 시도해주세요."
-                      )
-                    );
+                      case MSIUserStatus.userNotFound:
+                        Get.dialog(
+                          const CustomAlertDialog(
+                            message: "사용자를 찾을 수 없습니다. 다시 시도해주세요."
+                          )
+                        );
 
-                    break;
+                        break;
 
-                  case MSIUserStatus.wrongPassword:
-                    Get.dialog(
-                      const CustomAlertDialog(
-                        message: "비밀번호가 틀렸습니다. 다시 시도해주세요."
-                      )
-                    );
+                      case MSIUserStatus.wrongPassword:
+                        Get.dialog(
+                          const CustomAlertDialog(
+                            message: "비밀번호가 틀렸습니다. 다시 시도해주세요."
+                          )
+                        );
 
-                    break;
+                        break;
 
-                  default:
-                    Get.dialog(
-                      const CustomAlertDialog(
-                        message: "오류가 발생하였습니다. 다시 시도해주세요."
-                      )
-                    );
+                      default:
+                        Get.dialog(
+                          const CustomAlertDialog(
+                            message: "오류가 발생하였습니다. 다시 시도해주세요."
+                          )
+                        );
 
-                    break;
+                        break;
+                    }
+                  }
                 }
-              }
-            }
+              )
+            ]
           )
-        ]
-      )
+        );
+      },
     );
   }
 }
