@@ -209,378 +209,395 @@ class _MyAccountAvatar extends StatelessWidget {
   }
 }
 
-// ignore: must_be_immutable
-class _MyAccountForm1 extends StatelessWidget {
-  static final _formKey = GlobalKey<FormState>();
+class _MyAccountForm1Controller extends GetxController {
+  var formKey = GlobalKey<FormState>();
 
-  final MSIUser user;
+  var nameTextController = TextEditingController();
+  var phoneNumberTextController = TextEditingController();
+  var emailTextController = TextEditingController();
+  var baseTextController = TextEditingController();
+  var professionTextController = TextEditingController();
+  var interestTextController = TextEditingController();
+  var resumeTextController = TextEditingController();
 
-  final nameTextController = TextEditingController();
-  final phoneNumberTextController = TextEditingController();
-  final emailTextController = TextEditingController();
-  final baseTextController = TextEditingController();
-  final professionTextController = TextEditingController();
-  final interestTextController = TextEditingController();
-  final resumeTextController = TextEditingController();
+  MSIUser user;
 
-  _MyAccountForm1({
-    Key? key,
-    required this.user
-  }) : super(key: key) {
+  _MyAccountForm1Controller({required this.user}) {
     nameTextController.text = user.name ?? "";
     phoneNumberTextController.text = user.phoneNumber ?? "";
     emailTextController.text = user.email ?? "";
     baseTextController.text = user.baseName ?? "";
     professionTextController.text = user.profession ?? "";
     interestTextController.text = user.interest ?? "";
-    resumeTextController.text = user.resume ?? "";
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "성명",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                ObscurableFormField(
-                  shouldObscure: false,
-                  textController: nameTextController,
-                  funValidator: validateName()
-                )
-              ]
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "휴대폰 번호",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                ObscurableFormField(
-                  shouldObscure: false,
-                  textController: phoneNumberTextController,
-                  funValidator: validatePhoneNumber()
-                )
-              ]
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "이메일",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                ObscurableFormField(
-                  shouldObscure: false,
-                  textController: emailTextController,
-                  funValidator: validateEmail()
-                )
-              ]
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "비밀번호",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                CustomElevatedButton(
-                  text: "비밀번호 변경",
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black
-                  ),
-                  color: Colors.lightBlue[300],
-                  funPageRoute: () {
-                    Get.to(MyAccountPage2());
-                  }
-                )
-              ]
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "소속 비행단",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                AutocompleteForm(
-                  hintText: "소속 비행단을 입력해 주세요",
-                  formFlag: AutocompleteFormFlag.baseNames,
-                  textController: baseTextController,
-                )
-              ]
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "전문 분야",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                AutocompleteForm(
-                  hintText: "전문 분야를 입력해 주세요",
-                  textController: professionTextController,
-                )
-              ]
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "관심 분야",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                AutocompleteForm(
-                  hintText: "관심 분야를 입력해 주세요",
-                  textController: interestTextController,
-                )
-              ]
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "내 경력",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                MultilineFormField(
-                  textController: resumeTextController,
-                ),
-              ]
-            )
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomElevatedButton(
-              text: "저장",
-              textStyle: const TextStyle(
-                fontSize: 16,
-                color: Colors.white
-              ),
-              color: Theme.of(context).primaryColor,
-              funPageRoute: () async {
-                if (_formKey.currentState!.validate()) {
-                  user.name = nameTextController.text;
-                  user.phoneNumber = phoneNumberTextController.text;
-                  user.email = emailTextController.text;
-                  user.profession = professionTextController.text;
-                  user.interest = interestTextController.text;
-                  user.baseName = baseTextController.text;
-                  user.resume = resumeTextController.text;
-
-                  await user.update();
-
-                  Get.dialog(
-                    const CustomAlertDialog(
-                      message: "계정 정보가 변경되었습니다."
-                    )
-                  ); 
-                }
-              }
-            )
-          )
-        ]
-      )
-    );
+    resumeTextController.text = user.resume ?? "(없음)";
   }
 }
 
-class _MyAccountForm2 extends StatelessWidget {
-  static final _formKey = GlobalKey<FormState>();
-
+class _MyAccountForm1 extends StatelessWidget {
   final MSIUser user;
 
-  final passwordTextController = TextEditingController();
-  final newPasswordTextController = TextEditingController();
-  final confirmNewPasswordTextController = TextEditingController();
-
-  _MyAccountForm2({
+  const _MyAccountForm1({
     Key? key,
     required this.user
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "현재 비밀번호",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                ObscurableFormField(
-                  shouldObscure: true,
-                  textController: passwordTextController,
-                  funValidator: validatePassword()
+    return GetBuilder<_MyAccountForm1Controller>(
+      init: _MyAccountForm1Controller(user: user),
+      builder: (_) {
+        return Form(
+          key: _.formKey,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "성명",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    ObscurableFormField(
+                      shouldObscure: false,
+                      textController: _.nameTextController,
+                      funValidator: validateName()
+                    )
+                  ]
                 )
-              ]
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "새 비밀번호",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                ObscurableFormField(
-                  shouldObscure: true,
-                  textController: newPasswordTextController,
-                  funValidator: validatePassword(saveValue: true)
-                )
-              ]
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-                  child: const Text(
-                    "새 비밀번호 확인",
-                    style: TextStyle(fontSize: 16),
-                  )
-                ),
-                ObscurableFormField(
-                  shouldObscure: true,
-                  textController: confirmNewPasswordTextController,
-                  funValidator: validateConfirmPassword()
-                )
-              ]
-            )
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomElevatedButton(
-              text: "저장",
-              textStyle: const TextStyle(
-                fontSize: 16,
-                color: Colors.white
               ),
-              color: Theme.of(context).primaryColor,
-              funPageRoute: () async {
-                if (_formKey.currentState!.validate()) {
-                  MSIUserStatus status = await user.changePassword(
-                    oldPassword: passwordTextController.text,
-                    newPassword: newPasswordTextController.text
-                  );
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "휴대폰 번호",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    ObscurableFormField(
+                      shouldObscure: false,
+                      textController: _.phoneNumberTextController,
+                      funValidator: validatePhoneNumber()
+                    )
+                  ]
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "이메일",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    ObscurableFormField(
+                      shouldObscure: false,
+                      textController: _.emailTextController,
+                      funValidator: validateEmail()
+                    )
+                  ]
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "비밀번호",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    CustomElevatedButton(
+                      text: "비밀번호 변경",
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black
+                      ),
+                      color: Colors.lightBlue[300],
+                      funPageRoute: () {
+                        Get.to(MyAccountPage2());
+                      }
+                    )
+                  ]
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "소속 비행단",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    AutocompleteForm(
+                      hintText: "소속 비행단을 입력해 주세요",
+                      formFlag: AutocompleteFormFlag.baseNames,
+                      textController: _.baseTextController,
+                    )
+                  ]
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "전문 분야",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    AutocompleteForm(
+                      hintText: "전문 분야를 입력해 주세요",
+                      textController: _.professionTextController,
+                    )
+                  ]
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "관심 분야",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    AutocompleteForm(
+                      hintText: "관심 분야를 입력해 주세요",
+                      textController: _.interestTextController,
+                    )
+                  ]
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "내 경력",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    MultilineFormField(
+                      textController: _.resumeTextController,
+                    ),
+                  ]
+                )
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomElevatedButton(
+                  text: "저장",
+                  textStyle: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  funPageRoute: () async {
+                    if (_.formKey.currentState!.validate()) {
+                      user.name = _.nameTextController.text;
+                      user.phoneNumber = _.phoneNumberTextController.text;
+                      user.email = _.emailTextController.text;
+                      user.profession = _.professionTextController.text;
+                      user.interest = _.interestTextController.text;
+                      user.baseName = _.baseTextController.text;
+                      user.resume = _.resumeTextController.text;
 
-                  switch (status) {
-                    case MSIUserStatus.success:
-                      await Get.dialog(
-                        const CustomAlertDialog(
-                          message: "비밀번호가 변경되었습니다."
-                        )
-                      );
+                      await user.update();
 
-                      Get.back();
-
-                      break;
-
-                    case MSIUserStatus.userNotFound:
                       Get.dialog(
                         const CustomAlertDialog(
-                          message: "사용자를 찾을 수 없습니다. 다시 시도해주세요."
+                          message: "계정 정보가 변경되었습니다."
                         )
-                      );
-
-                      break;
-
-                    case MSIUserStatus.wrongPassword:
-                      Get.dialog(
-                        const CustomAlertDialog(
-                          message: "현재 비밀번호가 틀렸습니다. 다시 시도해주세요."
-                        )
-                      );
-
-                      break;
-
-                    default:
-                      Get.dialog(
-                        const CustomAlertDialog(
-                          message: "오류가 발생하였습니다. 다시 시도해주세요."
-                        )
-                      );
-
-                      break;
+                      ); 
+                    }
                   }
-                }
-              }
-            )
+                )
+              )
+            ]
           )
-        ]
-      )
+        );
+      }
+    );
+  }
+}
+
+class _MyAccountForm2Controller extends GetxController {
+  var formKey = GlobalKey<FormState>();
+
+  var passwordTextController = TextEditingController();
+  var newPasswordTextController = TextEditingController();
+  var confirmNewPasswordTextController = TextEditingController();
+}
+
+class _MyAccountForm2 extends StatelessWidget {
+  final MSIUser user;
+
+  const _MyAccountForm2({
+    Key? key,
+    required this.user
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<_MyAccountForm2Controller>(
+      init: _MyAccountForm2Controller(),
+      builder: (_) {
+        return Form(
+          key: _.formKey,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "현재 비밀번호",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    ObscurableFormField(
+                      shouldObscure: true,
+                      textController: _.passwordTextController,
+                      funValidator: validatePassword()
+                    )
+                  ]
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "새 비밀번호",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    ObscurableFormField(
+                      shouldObscure: true,
+                      textController: _.newPasswordTextController,
+                      funValidator: validatePassword(saveValue: true)
+                    )
+                  ]
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+                      child: const Text(
+                        "새 비밀번호 확인",
+                        style: TextStyle(fontSize: 16),
+                      )
+                    ),
+                    ObscurableFormField(
+                      shouldObscure: true,
+                      textController: _.confirmNewPasswordTextController,
+                      funValidator: validateConfirmPassword()
+                    )
+                  ]
+                )
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomElevatedButton(
+                  text: "저장",
+                  textStyle: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  funPageRoute: () async {
+                    if (_.formKey.currentState!.validate()) {
+                      MSIUserStatus status = await user.changePassword(
+                        oldPassword: _.passwordTextController.text,
+                        newPassword: _.newPasswordTextController.text
+                      );
+
+                      switch (status) {
+                        case MSIUserStatus.success:
+                          await Get.dialog(
+                            const CustomAlertDialog(
+                              message: "비밀번호가 변경되었습니다."
+                            )
+                          );
+
+                          Get.back();
+
+                          break;
+
+                        case MSIUserStatus.userNotFound:
+                          Get.dialog(
+                            const CustomAlertDialog(
+                              message: "사용자를 찾을 수 없습니다. 다시 시도해주세요."
+                            )
+                          );
+
+                          break;
+
+                        case MSIUserStatus.wrongPassword:
+                          Get.dialog(
+                            const CustomAlertDialog(
+                              message: "현재 비밀번호가 틀렸습니다. 다시 시도해주세요."
+                            )
+                          );
+
+                          break;
+
+                        default:
+                          Get.dialog(
+                            const CustomAlertDialog(
+                              message: "오류가 발생하였습니다. 다시 시도해주세요."
+                            )
+                          );
+
+                          break;
+                      }
+                    }
+                  }
+                )
+              )
+            ]
+          )
+        );
+      }
     );
   }
 }

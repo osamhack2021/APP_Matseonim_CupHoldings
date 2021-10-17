@@ -27,7 +27,7 @@ class MainPage extends StatelessWidget {
             final MSIUser user = snapshot.data!;
 
             return Padding(
-              padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: ListView(
                 children: [
                   Column(

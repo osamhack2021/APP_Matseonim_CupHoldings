@@ -37,91 +37,98 @@ class JoinPage2 extends StatelessWidget {
   }
 }
 
+class _JoinForm2Controller extends GetxController {
+  var formKey = GlobalKey<FormState>();
+
+  var professionTextController = TextEditingController();
+  var interestTextController = TextEditingController();
+  var baseTextController = TextEditingController();
+}
+
 class _JoinForm2 extends StatelessWidget {
-  static final _formKey = GlobalKey<FormState>();
-
-  final professionTextController = TextEditingController();
-  final interestTextController = TextEditingController();
-  final baseTextController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: AutocompleteForm(
-              hintText: "소속 비행단을 입력해주세요",
-              formFlag: AutocompleteFormFlag.baseNames,
-              textController: baseTextController,
-            ),
+    return GetBuilder<_JoinForm2Controller>(
+      init: _JoinForm2Controller(),
+      builder: (_) {
+        return Form(
+          key: _.formKey,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: AutocompleteForm(
+                  hintText: "소속 비행단을 입력해주세요",
+                  formFlag: AutocompleteFormFlag.baseNames,
+                  textController: _.baseTextController,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: AutocompleteForm(
+                  hintText: "전문 분야를 입력해 주세요",
+                  textController: _.professionTextController,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: AutocompleteForm(
+                  hintText: "관심 분야를 입력해 주세요",
+                  textController: _.interestTextController,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: CustomElevatedButton(
+                  text: "회원가입",
+                  textStyle: TextStyle(color: Colors.white),
+                  color: Colors.pink[400],
+                  funPageRoute: () async {
+                    if (_.formKey.currentState!.validate()) {
+                      final MSIUser user = Get.arguments;
+
+                      user.profession = _.professionTextController.text;
+                      user.interest = _.interestTextController.text;
+                      user.baseName = _.baseTextController.text;
+
+                      switch (await user.signUp()) {
+                        case MSIUserStatus.success:
+                          Get.offAll(LoginPage());
+
+                          Get.dialog(
+                            const CustomAlertDialog(
+                              message: "회원가입이 완료되었습니다."
+                            )
+                          );
+
+                          break;
+
+                        case MSIUserStatus.emailAlreadyInUse:
+                          Get.dialog(
+                            const CustomAlertDialog(
+                              message: "이미 사용 중인 이메일 주소입니다."
+                            )
+                          );
+
+                          break;
+
+                        default:
+                          Get.dialog(
+                            const CustomAlertDialog(
+                              message: "오류가 발생하였습니다. 다시 시도해주세요."
+                            )
+                          );
+
+                          break;
+                      }
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: AutocompleteForm(
-              hintText: "전문 분야를 입력해 주세요",
-              textController: professionTextController,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: AutocompleteForm(
-              hintText: "관심 분야를 입력해 주세요",
-              textController: interestTextController,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: CustomElevatedButton(
-              text: "회원가입",
-              textStyle: TextStyle(color: Colors.white),
-              color: Colors.pink[400],
-              funPageRoute: () async {
-                if (_formKey.currentState!.validate()) {
-                  final MSIUser user = Get.arguments;
-
-                  user.profession = professionTextController.text;
-                  user.interest = interestTextController.text;
-                  user.baseName = baseTextController.text;
-
-                  switch (await user.signUp()) {
-                    case MSIUserStatus.success:
-                      Get.offAll(LoginPage());
-
-                      Get.dialog(
-                        const CustomAlertDialog(
-                          message: "회원가입이 완료되었습니다."
-                        )
-                      );
-
-                      break;
-
-                    case MSIUserStatus.emailAlreadyInUse:
-                      Get.dialog(
-                        const CustomAlertDialog(
-                          message: "이미 사용 중인 이메일 주소입니다."
-                        )
-                      );
-
-                      break;
-
-                    default:
-                      Get.dialog(
-                        const CustomAlertDialog(
-                          message: "오류가 발생하였습니다. 다시 시도해주세요."
-                        )
-                      );
-
-                      break;
-                  }
-                }
-              },
-            ),
-          ),
-        ],
-      ),
+        );
+      }
     );
   }
 }

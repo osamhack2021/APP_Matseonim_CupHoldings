@@ -43,71 +43,78 @@ class InquiryPage extends StatelessWidget {
   }
 }
 
+class _CreateRequestFormController extends GetxController {
+  var formKey = GlobalKey<FormState>();
+
+  var titleTextController = TextEditingController();
+  var descriptionTextController = TextEditingController();
+}
+
 class _CreateRequestForm extends StatelessWidget {
-  static final _formKey = GlobalKey<FormState>();
-
-  final titleTextController = TextEditingController();
-  final descriptionTextController = TextEditingController();
-
   final MSIUser user;
 
-  _CreateRequestForm({
+  const _CreateRequestForm({
     Key? key,
     required this.user
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: ListView(
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Text(
-              "문의하기", 
-              style: TextStyle(fontSize: 32)
-            ),
-          ),
-          ObscurableFormField(
-            shouldObscure: false,
-            hintText: "문의 제목",
-            funValidator: validateText(),
-            textController: titleTextController,
-          ),
-          SizedBox(height: 20),
-          MultilineFormField(
-            textController: descriptionTextController,
-            funValidator: validateText()
-          ),
-          SizedBox(height: 20),
-          CustomElevatedButton(
-            text: "제출하기",
-            textStyle: const TextStyle(
-              fontSize: 16, 
-              color: Colors.white
-            ),
-            color: Theme.of(context).primaryColor,
-            funPageRoute: () async {
-              if (_formKey.currentState!.validate()) {
-                await MSIInquiries.add(
-                  uid: '${user.uid}',
-                  title: titleTextController.text,
-                  description: descriptionTextController.text,
-                );
+    return GetBuilder<_CreateRequestFormController>(
+      init: _CreateRequestFormController(),
+      builder: (_) {
+        return Form(
+          key: _.formKey,
+          child: ListView(
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  "문의하기", 
+                  style: TextStyle(fontSize: 32)
+                ),
+              ),
+              ObscurableFormField(
+                shouldObscure: false,
+                hintText: "문의 제목",
+                funValidator: validateText(),
+                textController: _.titleTextController,
+              ),
+              SizedBox(height: 20),
+              MultilineFormField(
+                textController: _.descriptionTextController,
+                funValidator: validateText()
+              ),
+              SizedBox(height: 20),
+              CustomElevatedButton(
+                text: "제출하기",
+                textStyle: const TextStyle(
+                  fontSize: 16, 
+                  color: Colors.white
+                ),
+                color: Theme.of(context).primaryColor,
+                funPageRoute: () async {
+                  if (_.formKey.currentState!.validate()) {
+                    await MSIInquiries.add(
+                      uid: '${user.uid}',
+                      title: _.titleTextController.text,
+                      description: _.descriptionTextController.text,
+                    );
 
-                await Get.dialog(
-                  const CustomAlertDialog(
-                    message: "문의가 완료되었습니다.\n빠른 시일내에 조치하겠습니다."
-                  )
-                );
+                    await Get.dialog(
+                      const CustomAlertDialog(
+                        message: "문의가 완료되었습니다.\n빠른 시일내에 조치하겠습니다."
+                      )
+                    );
 
-                Get.to(MainPage());
-              }
-            }
+                    Get.to(MainPage());
+                  }
+                }
+              )
+            ],
           )
-        ],
-      )
+        );
+      }
     );
   }
 }

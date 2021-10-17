@@ -115,21 +115,21 @@ class _EmailLoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<_EmailLoginFormController>(
       init: _EmailLoginFormController(),
-      builder: (_EmailLoginFormController controller) {
+      builder: (_) {
         return Form(
-          key: controller.formKey,
+          key: _.formKey,
           child: Column(
             children: [
               ObscurableFormField(
                 shouldObscure: false,
                 hintText: "이메일",
-                textController: controller.emailTextController,
+                textController: _.emailTextController,
                 funValidator: validateEmail(),
               ),
               ObscurableFormField(
                 shouldObscure: true,
                 hintText: "비밀번호",
-                textController: controller.passwordTextController,
+                textController: _.passwordTextController,
                 funValidator: validatePassword(),
               ),
               CustomElevatedButton(
@@ -137,10 +137,10 @@ class _EmailLoginForm extends StatelessWidget {
                 elevation: 8,
                 color: Colors.yellow[800],
                 funPageRoute: () async {
-                  if (controller.formKey.currentState!.validate()) {
+                  if (_.formKey.currentState!.validate()) {
                     MSIUserStatus status = await MSIUser(
-                      email: controller.emailTextController.text,
-                      password: controller.passwordTextController.text,
+                      email: _.emailTextController.text,
+                      password: _.passwordTextController.text,
                     ).login();
 
                     switch (status) {

@@ -8,7 +8,10 @@ import 'package:matseonim/pages/notification_page.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
 
-  const CustomAppBar({Key? key, this.showBackButton = false}) : super(key: key);
+  const CustomAppBar({
+    Key? key, 
+    this.showBackButton = false
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

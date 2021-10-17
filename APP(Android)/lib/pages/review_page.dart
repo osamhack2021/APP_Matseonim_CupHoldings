@@ -56,14 +56,16 @@ class ReviewPage extends StatelessWidget {
   }
 }
 
+class _CreateReviewFormController extends GetxController {
+  var formKey = GlobalKey<FormState>();
+
+  var valueTextController = TextEditingController();
+}
+
 class _CreateReviewForm extends StatelessWidget {
-  static final _formKey = GlobalKey<FormState>();
-
-  final valueTextController = TextEditingController();
-
   final MSIUser reviewer, reviewee;
 
-  _CreateReviewForm({
+  const _CreateReviewForm({
     Key? key,
     required this.reviewer,
     required this.reviewee
@@ -73,67 +75,72 @@ class _CreateReviewForm extends StatelessWidget {
   Widget build(BuildContext context) {
     double newRating = 3.0;
 
-    return Form(
-      key: _formKey,
-      child: ListView(
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Text(
-              "리뷰 쓰기",
-              style: TextStyle(fontSize: 32)
-            ),
-          ),
-          ReviewProfile(uid: reviewee.uid!),
-          SizedBox(height: 20),
-          Center(
-            child: CustomRatingBar(
-              initialValue: 3.0,
-              onUpdate: (double rating) {
-                newRating = rating;
-              }
-            )
-          ),
-          SizedBox(height: 15),
-          MultilineFormField(
-            textController: valueTextController,
-            funValidator: validateText()
-          ),
-          SizedBox(height: 20),
-          CustomElevatedButton(
-            text: "작성 완료",
-            textStyle: const TextStyle(
-              fontSize: 16, 
-              color: Colors.white
-            ),
-            color: Theme.of(context).primaryColor,
-            funPageRoute: () async {
-              if (_formKey.currentState!.validate()) {
-                await MSIReviews.add(
-                  reviewerId: reviewer.uid!, 
-                  revieweeId: reviewee.uid!, 
-                  rating: newRating, 
-                  value: valueTextController.text
-                );
+    return GetBuilder<_CreateReviewFormController>(
+      init: _CreateReviewFormController(),
+      builder: (_) {
+        return Form(
+          key: _.formKey,
+          child: ListView(
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  "리뷰 쓰기",
+                  style: TextStyle(fontSize: 32)
+                ),
+              ),
+              ReviewProfile(uid: reviewee.uid!),
+              SizedBox(height: 20),
+              Center(
+                child: CustomRatingBar(
+                  initialValue: 3.0,
+                  onUpdate: (double rating) {
+                    newRating = rating;
+                  }
+                )
+              ),
+              SizedBox(height: 15),
+              MultilineFormField(
+                textController: _.valueTextController,
+                funValidator: validateText()
+              ),
+              SizedBox(height: 20),
+              CustomElevatedButton(
+                text: "작성 완료",
+                textStyle: const TextStyle(
+                  fontSize: 16, 
+                  color: Colors.white
+                ),
+                color: Theme.of(context).primaryColor,
+                funPageRoute: () async {
+                  if (_.formKey.currentState!.validate()) {
+                    await MSIReviews.add(
+                      reviewerId: reviewer.uid!, 
+                      revieweeId: reviewee.uid!, 
+                      rating: newRating, 
+                      value: _.valueTextController.text
+                    );
 
-                await reviewee.sendNotification(
-                  type: MSINotificationType.newReview, 
-                  sender: reviewer, 
-                  payload: ""
-                );
+                    await reviewee.sendNotification(
+                      type: MSINotificationType.newReview, 
+                      sender: reviewer, 
+                      payload: ""
+                    );
 
-                await Get.dialog(
-                  const CustomAlertDialog(
-                    message: "리뷰가 작성되었습니다."
-                  )
-                );
+                    await Get.dialog(
+                      const CustomAlertDialog(
+                        message: "리뷰가 작성되었습니다."
+                      )
+                    );
 
-                Get.to(ProfilePage(uid: reviewee.uid));
-              }
-            }
+                    Get.to(ProfilePage(uid: reviewee.uid));
+                  }
+                }
+              )
+            ],
           )
-        ],
-      )
+        );
+      },
     );
   }
 }
