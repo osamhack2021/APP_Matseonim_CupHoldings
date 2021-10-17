@@ -7,7 +7,7 @@
 [![CodeFactor 등급 배지](https://img.shields.io/codefactor/grade/github/osamhack2021/APP_Matseonim_CupHoldings?style=flat-square)](https://www.codefactor.io/repository/github/osamhack2021/app_matseonim_cupholdings)
 [![코드 크기 배지](https://img.shields.io/github/languages/code-size/osamhack2021/APP_Matseonim_CupHoldings?style=flat-square)](https://github.com/osamhack2021/APP_Matseonim_CupHoldings/pulse)
   
-군생활 중 특정 분야에 도움이 필요할 때 마치 맞선임 같은 전문가를 매칭시켜주는 플랫폼.
+군생활 중 특정 분야에 도움이 필요할 때 마치 맞선임 같은 전문가를 매칭시켜주는 플랫폼.  
 '맞선임'은 A급 군생활을 위한 필수 앱입니다.
 
 [앱 소개](#앱-소개) &mdash;
