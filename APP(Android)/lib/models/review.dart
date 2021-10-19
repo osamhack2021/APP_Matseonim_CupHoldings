@@ -75,7 +75,7 @@ class MSIReviews {
           id: document.id,
           reviewerId: document["reviewerId"],
           revieweeId: document["revieweeId"],
-          rating: document["rating"],
+          rating: (document["rating"] as num).toDouble(),
           value: document["value"]
         )
       );
@@ -96,7 +96,7 @@ class MSIReviews {
           id: document.id,
           reviewerId: document["reviewerId"],
           revieweeId: document["revieweeId"],
-          rating: document["rating"],
+          rating: (document["rating"] as num).toDouble(),
           value: document["value"]
         )
       );
@@ -119,7 +119,7 @@ class MSIReviews {
           id: document.id,
           reviewerId: document["reviewerId"],
           revieweeId: document["revieweeId"],
-          rating: document["rating"],
+          rating: (document["rating"] as num).toDouble(),
           value: document["value"]
         )
       );
